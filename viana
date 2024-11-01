@@ -1,0 +1,171 @@
+import React, { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Pizza, Users, Calendar, Star, Heart, Clock, Gift, Trophy, Truck, Package } from 'lucide-react';
+
+const PromoCard = ({ title, price, description, savings, tags = [] }) => (
+  <Card className="w-full mb-4 hover:shadow-lg transition-shadow">
+    <CardHeader>
+      <div className="flex justify-between items-center">
+        <CardTitle className="text-lg font-bold">{title}</CardTitle>
+        <div className="flex gap-2">
+          {tags.map((tag, i) => (
+            <Badge key={i} variant="secondary" className="bg-blue-100">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </div>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2">
+        <p className="text-gray-600">{description}</p>
+        <div className="flex justify-between items-center mt-4">
+          <div>
+            <span className="text-2xl font-bold text-green-600">R$ {price}</span>
+            {savings && (
+              <span className="ml-2 text-sm text-red-500">
+                Economia de R$ {savings}
+              </span>
+            )}
+          </div>
+          <Button className="bg-blue-600 hover:bg-blue-700">
+            Pedir Agora
+          </Button>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const PromotionalSection = ({ title, icon: Icon, children }) => (
+  <div className="mb-8">
+    <div className="flex items-center gap-2 mb-4">
+      <Icon className="w-6 h-6 text-blue-600" />
+      <h2 className="text-xl font-bold">{title}</h2>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {children}
+    </div>
+  </div>
+);
+
+export default function VianasApp() {
+  const [activeTab, setActiveTab] = useState('combos');
+
+  return (
+    <div className="max-w-6xl mx-auto p-4">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold mb-2">Viana's Pizzaria & Hamburgueria</h1>
+        <p className="text-gray-600">Descubra nossas promoções e combos especiais</p>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="w-full justify-start mb-6 overflow-x-auto">
+          <TabsTrigger value="combos">Combos</TabsTrigger>
+          <TabsTrigger value="weekly">Promoções Semanais</TabsTrigger>
+          <TabsTrigger value="loyalty">Fidelidade</TabsTrigger>
+          <TabsTrigger value="special">Promoções Especiais</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="combos">
+          <PromotionalSection title="Combos Família" icon={Users}>
+            <PromoCard
+              title="Combo Família Feliz"
+              price="129,99"
+              description="1 Pizza Grande (2 sabores) + 1 Pizza Média (2 sabores) + Coca-Cola 2L"
+              savings="25,00"
+              tags={['Mais Vendido']}
+            />
+            <PromoCard
+              title="Mega Família"
+              price="169,99"
+              description="2 Pizzas Grandes + 1 Porção de Batata com Calabresa + Coca-Cola 2L"
+              savings="35,00"
+              tags={['Novo']}
+            />
+          </PromotionalSection>
+
+          <PromotionalSection title="Combos Casais" icon={Heart}>
+            <PromoCard
+              title="Jantar Romântico"
+              price="79,99"
+              description="1 Pizza Média (2 sabores) + 2 Brownies + 2 Sucos 300ml"
+              savings="15,00"
+            />
+            <PromoCard
+              title="Date Night"
+              price="99,99"
+              description="1 Calzone Grande + 2 Sucos + 2 Brownies"
+              savings="25,00"
+            />
+          </PromotionalSection>
+        </TabsContent>
+
+        <TabsContent value="weekly">
+          <PromotionalSection title="Promoções da Semana" icon={Calendar}>
+            <PromoCard
+              title="Segunda do Calzone"
+              price="59,99"
+              description="20% de desconto em qualquer calzone"
+              tags={['Segunda-feira']}
+            />
+            <PromoCard
+              title="Quarta Premium"
+              price="49,99"
+              description="Pizza Premium pelo preço da Tradicional"
+              tags={['Quarta-feira']}
+            />
+          </PromotionalSection>
+        </TabsContent>
+
+        <TabsContent value="loyalty">
+          <PromotionalSection title="Programa de Fidelidade" icon={Trophy}>
+            <PromoCard
+              title="Clube Viana's"
+              price="29,99/mês"
+              description="Assinatura mensal com 10% de desconto fixo + Delivery grátis + Pontuação em dobro"
+              tags={['Premium']}
+            />
+            <PromoCard
+              title="Indique um Amigo"
+              price="0,00"
+              description="Ganhe R$ 20 de desconto para cada indicação. Amigo ganha 15% no primeiro pedido"
+              tags={['Bônus']}
+            />
+          </PromotionalSection>
+        </TabsContent>
+
+        <TabsContent value="special">
+          <PromotionalSection title="Promoções Especiais" icon={Gift}>
+            <PromoCard
+              title="Combo Futebol"
+              price="129,99"
+              description="1 Pizza Grande + 4 Pastéis + Coca 2L"
+              tags={['Limitado']}
+            />
+            <PromoCard
+              title="Festival de Inverno"
+              price="69,99"
+              description="Qualquer calzone + suco quente"
+              tags={['Sazonal']}
+            />
+          </PromotionalSection>
+        </TabsContent>
+      </Tabs>
+
+      <div className="fixed bottom-4 right-4 space-x-2">
+        <Button className="bg-green-500 hover:bg-green-600">
+          <Truck className="w-4 h-4 mr-2" />
+          Delivery
+        </Button>
+        <Button className="bg-blue-500 hover:bg-blue-600">
+          <Package className="w-4 h-4 mr-2" />
+          Retirada
+        </Button>
+      </div>
+    </div>
+  );
+}
